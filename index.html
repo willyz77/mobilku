@@ -1,0 +1,1098 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0028)https://mobilku.netlify.app/ -->
+<html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perbandingan Cicilan Mobil</title>
+<link href="./Perbandingan Cicilan Mobil_files/css2" rel="stylesheet">
+<script src="./Perbandingan Cicilan Mobil_files/chart.umd.js.download"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--surface:#fff;--s2:#f5f5f2;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.16);
+  --text:#18170f;--t2:#6b6960;--t3:#a09e97;
+  --accent:#1a56db;--green:#166534;--gbg:#dcfce7;--amber:#92400e;--abg:#fef3c7;
+  --redbg:#fee2e2;--red:#991b1b;--blubg:#dbeafe;--blu:#1e40af;--r:12px;--rs:7px
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1rem}
+.wrap{max-width:1080px;margin:0 auto}
+header{margin-bottom:1.5rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-box{width:40px;height:40px;background:var(--text);border-radius:var(--rs);display:flex;align-items:center;justify-content:center}
+.logo-box svg{fill:var(--bg)}
+h1{font-size:20px;font-weight:600;letter-spacing:-.3px}
+.sub{font-size:13px;color:var(--t3);margin-top:2px}
+.card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.slabel{font-size:11px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem}
+.global-row{display:flex;gap:1rem;flex-wrap:wrap}
+.gf{flex:1;min-width:140px}
+.gf label{display:block;font-size:12px;color:var(--t2);margin-bottom:5px;font-weight:500}
+input,select{font-family:'DM Sans',sans-serif}
+input[type=number],input[type=text],select.inp{
+  width:100%;padding:8px 12px;font-size:14px;
+  border:.5px solid var(--border2);border-radius:var(--rs);
+  background:var(--s2);color:var(--text);outline:none;transition:border-color .15s
+}
+input:focus,select.inp:focus{border-color:var(--accent)}
+.tabs{display:flex;gap:2px;border-bottom:.5px solid var(--border);margin-bottom:1.25rem}
+.tab{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t3);
+  padding:8px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;
+  border-radius:4px 4px 0 0;transition:color .15s}
+.tab.on{color:var(--text);border-bottom-color:var(--accent);font-weight:500}
+.tab:hover{color:var(--t2)}
+.tp{display:none}.tp.on{display:block}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.qcard{background:var(--s2);border:.5px solid var(--border);border-radius:var(--r);padding:1rem}
+.qhead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.qtitle{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;line-height:1.3}
+.qsrc{font-size:11px;color:var(--t3);margin-bottom:8px}
+.qrow{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--border);font-size:12px}
+.qrow:last-child{border-bottom:none}
+.qlbl{color:var(--t2)}.qval{font-family:'DM Mono',monospace;font-weight:500}
+.badge{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;white-space:nowrap}
+.bg{background:var(--gbg);color:var(--green)}.ba{background:var(--abg);color:var(--amber)}.bb{background:var(--blubg);color:var(--blu)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:1.5rem}
+.metric{background:var(--s2);border-radius:var(--rs);padding:14px 16px}
+.ml{font-size:11px;color:var(--t3);margin-bottom:4px;font-weight:500}
+.mv{font-size:21px;font-weight:600;letter-spacing:-.5px;font-family:'DM Mono',monospace}
+.ms{font-size:11px;color:var(--t3);margin-top:3px}
+.metric-link{display:inline-flex;align-items:center;margin-top:8px;font-size:11px;color:var(--accent);text-decoration:none;font-weight:600}
+.metric-link:hover{text-decoration:underline}
+.pickbtn{margin-top:8px;border:.5px solid var(--border2);background:var(--surface);color:var(--text);border-radius:999px;padding:7px 11px;font-size:11px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.pickbtn:hover{background:var(--s2)}
+.pickbtn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.picked-card{border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 15%,transparent)}
+.pickrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.picktag{font-size:10px;padding:3px 7px;border-radius:999px;background:var(--blubg);color:var(--blu);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.sharebox{background:linear-gradient(135deg,color-mix(in srgb,var(--blubg) 40%,var(--surface)) 0%,var(--surface) 100%);border:.5px solid color-mix(in srgb,var(--accent) 25%,var(--border));border-radius:var(--rs);padding:12px 14px;margin-bottom:1.5rem}
+.share-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sharebtn{border:.5px solid var(--border2);background:var(--surface);color:var(--text);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer}
+.sharebtn:hover{background:var(--bg)}
+.shareurl{font-size:12px;color:var(--t2);line-height:1.5;word-break:break-all;margin-top:8px}
+.sharehint{font-size:11px;color:var(--t3);margin-top:6px}
+.submetrics.model-band .metric{background:linear-gradient(180deg,color-mix(in srgb,var(--blubg) 42%,var(--surface)) 0%,var(--surface) 100%);border:1px solid color-mix(in srgb,var(--accent) 18%,var(--border))}
+.submetrics.survey-band .metric{background:linear-gradient(180deg,color-mix(in srgb,var(--abg) 55%,var(--surface)) 0%,var(--surface) 100%);border:1px solid color-mix(in srgb,var(--amber) 18%,var(--border))}
+.submetrics.picked-band .metric{background:linear-gradient(180deg,color-mix(in srgb,var(--gbg) 55%,var(--surface)) 0%,var(--surface) 100%);border:1px solid color-mix(in srgb,var(--green) 20%,var(--border))}
+#submets+.section-head .slabel{color:var(--blu)}
+#survey+.section-head .slabel{color:var(--green)}
+.compare-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:12px;margin-bottom:1.25rem}
+.compare-box{background:linear-gradient(135deg,color-mix(in srgb,var(--blubg) 72%,var(--surface)) 0%,var(--surface) 100%);border:.5px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem}
+.compare-box h2{font-size:17px;line-height:1.25;margin-bottom:8px}
+.compare-box p{font-size:12.5px;color:var(--t2);line-height:1.6}
+.compare-note{display:grid;gap:8px}
+.compare-tip{background:var(--s2);border-radius:var(--rs);padding:10px 12px}
+.compare-tip strong{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+.legrow{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:11.5px;color:var(--t2)}
+.cw{position:relative;width:100%}
+.rtbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.rtbl th{text-align:left;font-size:11px;font-weight:500;color:var(--t3);padding:6px 10px;border-bottom:.5px solid var(--border);white-space:nowrap}
+.rtbl td{padding:9px 10px;border-bottom:.5px solid var(--border);font-family:'DM Mono',monospace;font-size:12px}
+.rtbl tr:last-child td{border-bottom:none}
+.rtbl .ntd{font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px}
+.hl td{background:color-mix(in srgb,var(--gbg) 25%,transparent)}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.section-copy{font-size:12px;color:var(--text);line-height:1.5}
+.submetrics{margin-bottom:1.5rem}
+.dvd{border:none;border-top:.5px solid var(--border);margin:1.5rem 0}
+.ctbl{width:100%;border-collapse:collapse;font-size:12px}
+.ctbl th{text-align:left;font-size:11px;font-weight:500;color:var(--t3);padding:5px 6px;border-bottom:.5px solid var(--border);white-space:nowrap}
+.ctbl td{padding:5px 6px;border-bottom:.5px solid var(--border);vertical-align:middle}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl input[type=text],.ctbl input[type=number]{padding:4px 7px;font-size:11.5px;font-family:'DM Mono',monospace}
+.ctbl input[type=text]:first-child{font-family:'DM Sans',sans-serif;font-size:12px}
+.addbtn{width:100%;margin-top:10px;border:.5px dashed var(--border2);border-radius:var(--rs);background:none;
+  color:var(--t2);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:.75rem;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.addbtn:hover{background:var(--s2)}
+.delbtn{background:none;border:none;cursor:pointer;color:var(--t3);font-size:17px;line-height:1;padding:3px 6px;border-radius:4px;transition:color .15s,background .15s}
+.delbtn:hover{color:var(--red);background:var(--redbg)}
+@media(max-width:800px){.compare-hero{grid-template-columns:1fr}}
+@media(max-width:600px){body{padding:1rem .75rem}h1{font-size:17px}.mv{font-size:18px}.tab{padding:8px 10px;font-size:12px}.card{padding:1rem}.compare-box h2{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">
+    <div class="logo-box"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+    <div><h1>Simulasi Kredit Mobil</h1><p class="sub">Perbandingan cicilan mobil dari dealer dan OLX Mobbi - 4 model, 22 penawaran</p></div>
+  </div>
+</header>
+
+<div class="card">
+  <p class="slabel">Pengaturan tampilan</p>
+  <div class="global-row">
+    <div class="gf"><label>Tenor yang dilihat</label>
+      <select class="inp" id="g-tenor" onchange="renderAll()">
+        <option value="35">35 bulan (~3 tahun)</option>
+        <option value="47" selected="">47 bulan (~4 tahun)</option>
+        <option value="59">59 bulan (~5 tahun)</option>
+      </select>
+    </div>
+    <div class="gf"><label>Data grafik</label>
+      <select class="inp" id="g-chart" onchange="renderAll()">
+        <option value="cicilan">Cicilan per bulan</option>
+        <option value="total">Total dibayar (DP + cicilan)</option>
+        <option value="otr">Harga OTR</option>
+      </select>
+    </div>
+    <div class="gf"><label>Filter model</label>
+      <select class="inp" id="g-filter" onchange="renderAll()">
+        <option value="">Semua model</option>
+        <option value="S-Cross">Suzuki SX4 S-Cross</option>
+        <option value="Trax">Chevrolet Trax</option>
+        <option value="Outlander">Mitsubishi Outlander</option>
+        <option value="Tucson">Hyundai Tucson</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding-bottom:1.5rem">
+  <div class="tabs">
+    <button class="tab on" onclick="sw(&#39;compare&#39;)">Dashboard Perbandingan</button>
+    <button class="tab" onclick="sw(&#39;quotes&#39;)">Penawaran WA</button>
+    <button class="tab" onclick="sw(&#39;custom&#39;)">Edit data</button>
+  </div>
+
+  <div class="tp" id="tp-quotes">
+    <p class="slabel">Detail semua penawaran dari chat WhatsApp dan OLX Mobbi</p>
+    <div class="qgrid" id="qgrid"><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#1a56db"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 185.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.3jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#1a56db;font-weight:600">Rp 4.3jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#059669"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª +62 877-8102-9626 (BFI Finance)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 190.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 6.0jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#059669;font-weight:600">Rp 4.8jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#d97706"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Michael HDR Mobilindo â€” +62 811-1085-8899</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 190.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 6.0jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#d97706;font-weight:600">Rp 4.8jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#dc2626"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª +62 817-9638-889 (BFI Finance, dp44jt)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 175.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 44.0jt</span></div>
+      
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#dc2626;font-weight:600">Rp 4.3jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 59 bln</span><span class="qval">Rp 3.7jt/bln</span></div>
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#7c3aed"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª +62 881-1154-299</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 178.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 4.7jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#7c3aed;font-weight:600">Rp 3.8jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 59 bln</span><span class="qval">Rp 3.3jt/bln</span></div>
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#0891b2"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª TMB â€” 0811-1085-8899</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 166.5jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.6jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#0891b2;font-weight:600">Rp 4.7jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#be185d"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 185.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.2jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#be185d;font-weight:600">Rp 4.2jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#92400e"></span>Suzuki SX4 S-Cross AT <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Agen â€” 081957009669 (Kombinasi)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">â€”</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.1jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#92400e;font-weight:600">Rp 4.1jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#065f46"></span>Chevrolet Trax LTZ Bensin AT <span style="color:var(--t3);font-weight:400">2016</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Esanove Second Cars â€” +62 851-1734-1124</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 115.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 2.4jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#065f46;font-weight:600">Rp 1.9jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#1e3a8a"></span>Chevrolet Trax Turbo LTZ 1.4 <span style="color:var(--t3);font-weight:400">2017</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Idi Ototrack</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 110.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 3.1jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#1e3a8a;font-weight:600">Rp 2.6jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#713f12"></span>Chevrolet Trax Turbo LTZ 1.4 <span style="color:var(--t3);font-weight:400">2017</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª autozir (48bln)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 110.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#713f12;font-weight:600">Rp 2.7jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#4a044e"></span>Chevrolet Trax Turbo Premier 1.4 <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Ade Outlander px (Paket A, dp45jt)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 138.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 45.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 4.1jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#4a044e;font-weight:600">Rp 3.4jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#7f1d1d"></span>Chevrolet Trax Turbo Premier 1.4 <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª MGK Kemayoran (CIMB Niaga, dp33jt)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 138.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 33.0jt</span></div>
+      
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#7f1d1d;font-weight:600">Rp 3.9jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#0c4a6e"></span>Chevrolet Trax LTZ Turbo 1.4 <span style="color:var(--t3);font-weight:400">2017</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª mjm ciyo</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 120.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 3.1jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#0c4a6e;font-weight:600">Rp 2.6jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#1a2e05"></span>Chevrolet Trax 1.4 Turbo <span style="color:var(--t3);font-weight:400">2019</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª BAM Autos â€” +62 811-1085-8899</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 142.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 4.1jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#1a2e05;font-weight:600">Rp 3.4jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#1a56db"></span>Mitsubishi Outlander 2.0 GLS AT <span style="color:var(--t3);font-weight:400">2016</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª +62 817-7023-5426 (dp40jt)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 139.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 40.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 4.5jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#1a56db;font-weight:600">Rp 3.7jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#059669"></span>Mitsubishi Outlander px <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Autocar 88 â€” +62 877-8102-9626 (dp40jt)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 148.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 40.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.3jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#059669;font-weight:600">Rp 4.3jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#d97706"></span>Mitsubishi Outlander PX <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Dagang Mobil</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 155.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 35.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.4jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#d97706;font-weight:600">Rp 4.4jt/bln</span></div>
+      
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#dc2626"></span>Hyundai Tucson 2.0 XG <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Ade Outlander px (Paket C)</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 180.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">Rp 5.3jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#dc2626;font-weight:600">Rp 4.4jt/bln</span></div>
+      <div class="qrow"><span class="qlbl">Cicilan 59 bln</span><span class="qval">Rp 4.0jt/bln</span></div>
+    </div><div class="qcard">
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:#7c3aed"></span>Hyundai Tucson <span style="color:var(--t3);font-weight:400">2018</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª Autozir</div>
+        <span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">Rp 170.0jt</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">Rp 50.0jt</span></div>
+      
+      <div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:#7c3aed;font-weight:600">Rp 4.5jt/bln</span></div>
+      
+    </div></div>
+  </div>
+
+  <div class="tp on" id="tp-compare">
+    <div class="metrics" id="mets"></div>
+
+    <div class="section-head">
+      <p class="slabel" style="margin-bottom:0">Terendah per jenis mobil</p>
+      <p class="section-copy">Biar gampang lihat kandidat terbaik untuk tiap model, bukan hanya yang paling murah secara keseluruhan.</p>
+    </div>
+    <div class="metrics submetrics model-band" id="submets"></div>
+
+    <div class="section-head">
+      <p class="slabel" style="margin-bottom:0">Layak disurvei</p>
+      <p class="section-copy">Shortlist ini memprioritaskan unit yang datanya paling lengkap dan total biayanya masih masuk akal untuk dicek langsung.</p>
+    </div>
+    <div class="metrics submetrics survey-band" id="survey"></div>
+
+    <div class="section-head">
+      <p class="slabel" style="margin-bottom:0">Pilihan survei kamu</p>
+      <p class="section-copy">Klik langsung kandidat dari shortlist atau tabel, nanti daftar ini akan update realtime.</p>
+    </div>
+    <div class="sharebox">
+      <div class="share-actions">
+        <button class="sharebtn" onclick="copySurveyLink()">Copy link survei</button>
+      </div>
+      <div class="shareurl" id="share-url">-</div>
+    </div>
+    <div class="metrics submetrics picked-band" id="survey-picked"></div>
+
+    <div class="section-head">
+      <p class="slabel" style="margin-bottom:0">Tabel ringkasan per unit</p>
+      <p class="section-copy">Bagian ini paling enak dipakai untuk membandingkan antar unit karena semua tenor ada dalam satu baris.</p>
+    </div>
+    <div id="twrap" style="overflow-x:auto">
+      <table class="rtbl"><thead><tr>
+        <th>Mobil</th><th>Thn</th><th>OTR</th><th>DP</th>
+        <th>Cicilan 35bln</th><th>Cicilan 47bln</th><th>Cicilan 59bln</th><th>Sumber</th><th>Link produk</th>
+      </tr></thead><tbody id="rtb"></tbody></table>
+    </div>
+
+    <hr class="dvd">
+
+    <div class="section-head">
+      <p class="slabel" style="margin-bottom:0">Grafik perbandingan harga</p>
+      <p class="section-copy">Grafik membantu lihat jarak antar penawaran dengan cepat setelah tabelnya dibaca.</p>
+    </div>
+    <div class="legrow" id="cleg"></div>
+    <div class="cw" id="cwrap"><canvas id="mc" role="img" aria-label="Grafik perbandingan cicilan mobil"></canvas></div>
+  </div>
+  <div class="tp" id="tp-custom">
+    <p class="slabel">Edit penawaran</p>
+    <div style="overflow-x:auto">
+    <table class="ctbl">
+      <thead><tr>
+        <th></th><th style="min-width:160px">Nama</th><th style="min-width:60px">Thn</th>
+        <th style="min-width:120px">OTR (Rp)</th><th style="min-width:100px">DP (Rp)</th>
+        <th style="min-width:110px">Cicilan 35bln</th><th style="min-width:110px">Cicilan 47bln</th><th style="min-width:110px">Cicilan 59bln</th>
+        <th style="min-width:150px">Sumber</th><th style="min-width:180px">Link produk</th><th></th>
+      </tr></thead>
+      <tbody id="ctb"><tr>
+      <td><span class="dot" style="background:#1a56db"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(1,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(1,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="185000000" step="1000000" oninput="upd(1,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(1,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5310000" step="10000" oninput="upd(1,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4280000" step="10000" oninput="upd(1,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(1,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)" oninput="upd(1,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(1)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#059669"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(2,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(2,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="190000000" step="1000000" oninput="upd(2,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(2,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5970000" step="10000" oninput="upd(2,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4790000" step="10000" oninput="upd(2,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(2,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="â€” +62 877-8102-9626 (BFI Finance)" oninput="upd(2,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(2)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#d97706"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(3,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(3,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="190000000" step="1000000" oninput="upd(3,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(3,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5970000" step="10000" oninput="upd(3,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4790000" step="10000" oninput="upd(3,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(3,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Michael HDR Mobilindo â€” +62 811-1085-8899" oninput="upd(3,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(3)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#dc2626"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(4,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(4,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="175000000" step="1000000" oninput="upd(4,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="44000000" step="1000000" oninput="upd(4,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(4,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4260000" step="10000" oninput="upd(4,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="3660000" step="10000" oninput="upd(4,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="â€” +62 817-9638-889 (BFI Finance, dp44jt)" oninput="upd(4,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(4)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#7c3aed"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(5,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(5,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="178000000" step="1000000" oninput="upd(5,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(5,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="4680000" step="10000" oninput="upd(5,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="3790000" step="10000" oninput="upd(5,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="3255000" step="10000" oninput="upd(5,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="â€” +62 881-1154-299" oninput="upd(5,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(5)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#0891b2"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(6,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(6,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="166500000" step="1000000" oninput="upd(6,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(6,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5600000" step="10000" oninput="upd(6,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4700000" step="10000" oninput="upd(6,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(6,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="TMB â€” 0811-1085-8899" oninput="upd(6,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(6)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#be185d"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(7,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(7,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="185000000" step="1000000" oninput="upd(7,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(7,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5207000" step="10000" oninput="upd(7,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4165000" step="10000" oninput="upd(7,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(7,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)" oninput="upd(7,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(7)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#92400e"></span></td>
+      <td><input type="text" value="Suzuki SX4 S-Cross AT" oninput="upd(8,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(8,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="" step="1000000" oninput="upd(8,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(8,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5092347" step="10000" oninput="upd(8,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4116591" step="10000" oninput="upd(8,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(8,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Agen â€” 081957009669 (Kombinasi)" oninput="upd(8,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(8)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#065f46"></span></td>
+      <td><input type="text" value="Chevrolet Trax LTZ Bensin AT" oninput="upd(9,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2016" oninput="upd(9,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="115000000" step="1000000" oninput="upd(9,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(9,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="2420000" step="10000" oninput="upd(9,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="1950000" step="10000" oninput="upd(9,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(9,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Esanove Second Cars â€” +62 851-1734-1124" oninput="upd(9,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(9)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#1e3a8a"></span></td>
+      <td><input type="text" value="Chevrolet Trax Turbo LTZ 1.4" oninput="upd(10,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2017" oninput="upd(10,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="110000000" step="1000000" oninput="upd(10,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(10,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="3140000" step="10000" oninput="upd(10,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="2580000" step="10000" oninput="upd(10,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(10,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Idi Ototrack" oninput="upd(10,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(10)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#713f12"></span></td>
+      <td><input type="text" value="Chevrolet Trax Turbo LTZ 1.4" oninput="upd(11,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2017" oninput="upd(11,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="110000000" step="1000000" oninput="upd(11,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(11,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(11,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="2740000" step="10000" oninput="upd(11,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(11,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="autozir (48bln)" oninput="upd(11,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(11)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#4a044e"></span></td>
+      <td><input type="text" value="Chevrolet Trax Turbo Premier 1.4" oninput="upd(12,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(12,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="138000000" step="1000000" oninput="upd(12,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="45000000" step="1000000" oninput="upd(12,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="4149000" step="10000" oninput="upd(12,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="3364000" step="10000" oninput="upd(12,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(12,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Ade Outlander px (Paket A, dp45jt)" oninput="upd(12,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(12)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#7f1d1d"></span></td>
+      <td><input type="text" value="Chevrolet Trax Turbo Premier 1.4" oninput="upd(13,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(13,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="138000000" step="1000000" oninput="upd(13,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="33000000" step="1000000" oninput="upd(13,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(13,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="3900000" step="10000" oninput="upd(13,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(13,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="MGK Kemayoran (CIMB Niaga, dp33jt)" oninput="upd(13,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(13)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#0c4a6e"></span></td>
+      <td><input type="text" value="Chevrolet Trax LTZ Turbo 1.4" oninput="upd(14,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2017" oninput="upd(14,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="120000000" step="1000000" oninput="upd(14,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(14,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="3150000" step="10000" oninput="upd(14,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="2628000" step="10000" oninput="upd(14,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(14,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="mjm ciyo" oninput="upd(14,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(14)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#1a2e05"></span></td>
+      <td><input type="text" value="Chevrolet Trax 1.4 Turbo" oninput="upd(15,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2019" oninput="upd(15,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="142000000" step="1000000" oninput="upd(15,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(15,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="4132000" step="10000" oninput="upd(15,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="3433000" step="10000" oninput="upd(15,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(15,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="BAM Autos â€” +62 811-1085-8899" oninput="upd(15,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(15)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#1a56db"></span></td>
+      <td><input type="text" value="Mitsubishi Outlander 2.0 GLS AT" oninput="upd(16,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2016" oninput="upd(16,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="139000000" step="1000000" oninput="upd(16,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="40000000" step="1000000" oninput="upd(16,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="4523000" step="10000" oninput="upd(16,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="3664000" step="10000" oninput="upd(16,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(16,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="â€” +62 817-7023-5426 (dp40jt)" oninput="upd(16,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(16)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#059669"></span></td>
+      <td><input type="text" value="Mitsubishi Outlander px" oninput="upd(17,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(17,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="148000000" step="1000000" oninput="upd(17,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="40000000" step="1000000" oninput="upd(17,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5275000" step="10000" oninput="upd(17,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4270000" step="10000" oninput="upd(17,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(17,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Autocar 88 â€” +62 877-8102-9626 (dp40jt)" oninput="upd(17,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(17)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#d97706"></span></td>
+      <td><input type="text" value="Mitsubishi Outlander PX" oninput="upd(18,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(18,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="155000000" step="1000000" oninput="upd(18,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="35000000" step="1000000" oninput="upd(18,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5435000" step="10000" oninput="upd(18,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4352000" step="10000" oninput="upd(18,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(18,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Dagang Mobil" oninput="upd(18,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(18)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#dc2626"></span></td>
+      <td><input type="text" value="Hyundai Tucson 2.0 XG" oninput="upd(19,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(19,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="180000000" step="1000000" oninput="upd(19,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(19,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="5281000" step="10000" oninput="upd(19,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4446000" step="10000" oninput="upd(19,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="3998000" step="10000" oninput="upd(19,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Ade Outlander px (Paket C)" oninput="upd(19,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(19)">Ã—</button></td>
+    </tr><tr>
+      <td><span class="dot" style="background:#7c3aed"></span></td>
+      <td><input type="text" value="Hyundai Tucson" oninput="upd(20,&#39;name&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:12px"></td>
+      <td><input type="text" value="2018" oninput="upd(20,&#39;year&#39;,this.value)"></td>
+      <td><input type="number" value="170000000" step="1000000" oninput="upd(20,&#39;otr&#39;,this.value)"></td>
+      <td><input type="number" value="50000000" step="1000000" oninput="upd(20,&#39;dp&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(20,&#39;c35&#39;,this.value)"></td>
+      <td><input type="number" value="4450000" step="10000" oninput="upd(20,&#39;c47&#39;,this.value)"></td>
+      <td><input type="number" value="" step="10000" oninput="upd(20,&#39;c59&#39;,this.value)"></td>
+      <td><input type="text" value="Autozir" oninput="upd(20,&#39;src&#39;,this.value)" style="font-family:&#39;DM Sans&#39;,sans-serif;font-size:11px"></td>
+      <td><button class="delbtn" onclick="del(20)">Ã—</button></td>
+    </tr></tbody>
+    </table>
+    </div>
+    <button class="addbtn" onclick="addCar()">+ Tambah penawaran</button>
+  </div>
+</div>
+
+</div>
+<script>
+const COLS=['#1a56db','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#be185d','#92400e','#065f46','#1e3a8a','#713f12','#4a044e','#7f1d1d','#0c4a6e','#1a2e05'];
+let CARS=[
+  // --- SUZUKI SX4 S-CROSS ---
+  {id:1,name:'Suzuki SX4 S-Cross AT',year:'2019',otr:185000000,dp:50000000,c35:5310000,c47:4280000,c59:null,src:'Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)',link:''},
+  {id:2,name:'Suzuki SX4 S-Cross AT',year:'2019',otr:190000000,dp:50000000,c35:5970000,c47:4790000,c59:null,src:'â€” +62 877-8102-9626 (BFI Finance)',link:''},
+  {id:3,name:'Suzuki SX4 S-Cross AT',year:'2019',otr:190000000,dp:50000000,c35:5970000,c47:4790000,c59:null,src:'Michael HDR Mobilindo â€” +62 811-1085-8899',link:''},
+  {id:4,name:'Suzuki SX4 S-Cross AT',year:'2018',otr:175000000,dp:44000000,c35:null,c47:4260000,c59:3660000,src:'â€” +62 817-9638-889 (BFI Finance, dp44jt)',link:''},
+  {id:5,name:'Suzuki SX4 S-Cross AT',year:'2018',otr:178000000,dp:50000000,c35:4680000,c47:3790000,c59:3255000,src:'â€” +62 881-1154-299',link:''},
+  {id:6,name:'Suzuki SX4 S-Cross AT',year:'2019',otr:166500000,dp:50000000,c35:5600000,c47:4700000,c59:null,src:'TMB â€” 0811-1085-8899',link:''},
+  {id:7,name:'Suzuki SX4 S-Cross AT',year:'2019',otr:185000000,dp:50000000,c35:5207000,c47:4165000,c59:null,src:'Esanove Second Cars â€” +62 851-1734-1124 (TAF Leasing)',link:''},
+  {id:8,name:'Suzuki SX4 S-Cross AT',year:'2018',otr:0,dp:50000000,c35:5092347,c47:4116591,c59:null,src:'Agen â€” 081957009669 (Kombinasi)',link:''},
+
+  // --- CHEVROLET TRAX ---
+  {id:9,name:'Chevrolet Trax LTZ Bensin AT',year:'2016',otr:115000000,dp:50000000,c35:2420000,c47:1950000,c59:null,src:'Esanove Second Cars â€” +62 851-1734-1124',link:''},
+  {id:10,name:'Chevrolet Trax Turbo LTZ 1.4',year:'2017',otr:110000000,dp:50000000,c35:3140000,c47:2580000,c59:null,src:'Idi Ototrack',link:''},
+  {id:11,name:'Chevrolet Trax Turbo LTZ 1.4',year:'2017',otr:110000000,dp:50000000,c35:null,c47:2740000,c59:null,src:'autozir (48bln)',link:''},
+  {id:12,name:'Chevrolet Trax Turbo Premier 1.4',year:'2018',otr:138000000,dp:45000000,c35:4149000,c47:3364000,c59:null,src:'Ade Outlander px (Paket A, dp45jt)',link:''},
+  {id:13,name:'Chevrolet Trax Turbo Premier 1.4',year:'2018',otr:138000000,dp:33000000,c35:null,c47:3900000,c59:null,src:'MGK Kemayoran (CIMB Niaga, dp33jt)',link:''},
+  {id:14,name:'Chevrolet Trax LTZ Turbo 1.4',year:'2017',otr:120000000,dp:50000000,c35:3150000,c47:2628000,c59:null,src:'mjm ciyo',link:''},
+  {id:15,name:'Chevrolet Trax 1.4 Turbo',year:'2019',otr:142000000,dp:50000000,c35:4132000,c47:3433000,c59:null,src:'BAM Autos â€” +62 811-1085-8899',link:''},
+
+  // --- MITSUBISHI OUTLANDER ---
+  {id:16,name:'Mitsubishi Outlander 2.0 GLS AT',year:'2016',otr:139000000,dp:40000000,c35:4523000,c47:3664000,c59:null,src:'â€” +62 817-7023-5426 (dp40jt)',link:''},
+  {id:17,name:'Mitsubishi Outlander px',year:'2018',otr:148000000,dp:40000000,c35:5275000,c47:4270000,c59:null,src:'Autocar 88 â€” +62 877-8102-9626 (dp40jt)',link:''},
+  {id:18,name:'Mitsubishi Outlander PX',year:'2018',otr:155000000,dp:35000000,c35:5435000,c47:4352000,c59:null,src:'Dagang Mobil',link:''},
+
+  // --- HYUNDAI TUCSON ---
+  {id:19,name:'Hyundai Tucson 2.0 XG',year:'2018',otr:180000000,dp:50000000,c35:5281000,c47:4446000,c59:3998000,src:'Ade Outlander px (Paket C)',link:''},
+  {id:20,name:'Hyundai Tucson',year:'2018',otr:170000000,dp:50000000,c35:null,c47:4450000,c59:null,src:'Autozir',link:''},
+
+  // --- OLX MOBBI (Sales July) ---
+  {id:21,name:'Chevrolet Trax LTZ Turbo Premier',year:'2018',otr:null,dp:null,c35:3550000,c47:3053000,c59:null,src:'Sales July â€” OLX Mobbi (belum nego)',link:''},
+  {id:22,name:'Suzuki SX4 S-Cross AT',year:'2018',otr:null,dp:150000000,c35:5100000,c47:4100000,c59:null,src:'Sales July â€” OLX Mobbi (belum nego)',link:''}
+];
+let nid=23,myChart=null;
+let SURVEY_PICKS=[];
+
+const fr=n=>n!=null?'Rp '+(n>=1e9?(n/1e9).toFixed(2)+'M':n>=1e6?(n/1e6).toFixed(1)+'jt':n.toLocaleString('id-ID')):'-';
+const col=i=>COLS[i%COLS.length];
+const modelLabel=car=>car?`${car.name}${car.year?` ${car.year}`:''}`:'-';
+const normalizeSource=src=>src?(src.replace(/â€”/g,'-').replace(/^\s*-\s*/,'').trim()||'-'):'-';
+const modelFamily=car=>{
+  if(!car?.name)return 'Lainnya';
+  if(car.name.includes('Suzuki SX4'))return 'Suzuki SX4 S-Cross';
+  if(car.name.includes('Chevrolet Trax'))return 'Chevrolet Trax';
+  if(car.name.includes('Outlander'))return 'Mitsubishi Outlander';
+  if(car.name.includes('Tucson'))return 'Hyundai Tucson';
+  return car.name.split(' ').slice(0,2).join(' ');
+};
+const linkButton=url=>url?`<a class="metric-link" href="${url}" target="_blank" rel="noopener noreferrer">Lihat produk</a>`:'';
+const isPicked=id=>SURVEY_PICKS.includes(id);
+function surveyUrl(){
+  const url=new URL(window.location.href);
+  if(SURVEY_PICKS.length)url.searchParams.set('survey',SURVEY_PICKS.join(','));
+  else url.searchParams.delete('survey');
+  return url.toString();
+}
+function syncSurveyUrl(){
+  const url=new URL(window.location.href);
+  if(SURVEY_PICKS.length)url.searchParams.set('survey',SURVEY_PICKS.join(','));
+  else url.searchParams.delete('survey');
+  history.replaceState({},'',url);
+}
+function readSurveyPicksFromUrl(){
+  const params=new URLSearchParams(window.location.search);
+  const raw=params.get('survey');
+  if(!raw)return null;
+  return raw.split(',').map(v=>parseInt(v,10)).filter(v=>!Number.isNaN(v));
+}
+function loadSurveyPicks(){
+  const fromUrl=readSurveyPicksFromUrl();
+  if(fromUrl){SURVEY_PICKS=fromUrl;return;}
+  try{SURVEY_PICKS=JSON.parse(localStorage.getItem('surveyPicks')||'[]');}
+  catch{SURVEY_PICKS=[];}
+}
+function saveSurveyPicks(){localStorage.setItem('surveyPicks',JSON.stringify(SURVEY_PICKS));}
+function toggleSurveyPick(id){
+  SURVEY_PICKS=isPicked(id)?SURVEY_PICKS.filter(x=>x!==id):[id,...SURVEY_PICKS.filter(x=>x!==id)];
+  saveSurveyPicks();
+  syncSurveyUrl();
+  renderAll();
+  renderQuotes();
+}
+async function copySurveyLink(){
+  const url=surveyUrl();
+  try{
+    await navigator.clipboard.writeText(url);
+  }catch{}
+  const el=document.getElementById('share-url');
+  if(el)el.textContent=url;
+}
+function resetSurveyLink(){
+  SURVEY_PICKS=[];
+  saveSurveyPicks();
+  syncSurveyUrl();
+  renderAll();
+  renderQuotes();
+}
+const pickButton=(id,labelOn='Sudah dipilih',labelOff='Pilih survei')=>`<button class="pickbtn ${isPicked(id)?'on':''}" onclick="toggleSurveyPick(${id})">${isPicked(id)?labelOn:labelOff}</button>`;
+
+function sw(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('on',['compare','quotes','custom'][i]===t));
+  document.querySelectorAll('.tp').forEach(el=>el.classList.remove('on'));
+  document.getElementById('tp-'+t).classList.add('on');
+  if(t==='compare')renderAll();
+}
+
+function filtered(){
+  const f=document.getElementById('g-filter').value;
+  return f?CARS.filter(c=>c.name.includes(f)):CARS;
+}
+function gc(car){
+  const t=parseInt(document.getElementById('g-tenor').value);
+  return t===35?car.c35:t===47?car.c47:car.c59;
+}
+
+function renderQuotes(){
+  const g=document.getElementById('qgrid');g.innerHTML='';
+  CARS.forEach((car,i)=>{
+    const clr=col(i);
+    const waMatch=car.src?(car.src.match(/\+62[\d\-]+/)||[''])[0]:'';
+    const waClean=waMatch.replace(/\D/g,'');
+    const waHref=waClean?`https://wa.me/${waClean}`:'';
+    const cleanSrc=normalizeSource(car.src);
+    const label=cleanSrc.replace(/\s*-\s*\+62[\d\-]+/,'').replace(/^\s*-\s*/,'').trim();
+    const div=document.createElement('div');div.className=`qcard ${isPicked(car.id)?'picked-card':''}`;
+    div.innerHTML=`
+      <div class="qhead">
+        <div class="qtitle"><span class="dot" style="background:${clr}"></span>${car.name} <span style="color:var(--t3);font-weight:400">${car.year||'-'}</span></div>
+      </div>
+      <div style="margin-bottom:8px">
+        ${label?`<div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:4px">ðŸª ${label}</div>`:''}
+        ${waHref
+          ?`<a href="${waHref}" target="_blank" style="font-size:12px;color:#25d366;text-decoration:none;display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-weight:500">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.523 5.856L.057 23.882l6.186-1.438A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.67-.52-5.192-1.427l-.371-.221-3.865.898.937-3.758-.242-.386A9.938 9.938 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              ${waMatch}</a>`
+          :`<span style="font-size:11px;color:var(--t3)">Tidak ada nomor WA</span>`}
+        ${car.link?`<div style="margin-top:7px"><a href="${car.link}" target="_blank" rel="noopener noreferrer" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600">Lihat link produk</a></div>`:''}
+        <div class="pickrow">${isPicked(car.id)?'<span class="picktag">Dipilih survei</span>':''}${pickButton(car.id,'Batal survei','Pilih survei')}</div>
+      </div>
+      <div class="qrow"><span class="qlbl">OTR</span><span class="qval">${fr(car.otr)}</span></div>
+      <div class="qrow"><span class="qlbl">DP</span><span class="qval">${fr(car.dp)}</span></div>
+      ${car.c35?`<div class="qrow"><span class="qlbl">Cicilan 35 bln</span><span class="qval">${fr(car.c35)}/bln</span></div>`:''}
+      ${car.c47?`<div class="qrow"><span class="qlbl">Cicilan 47 bln</span><span class="qval" style="color:${clr};font-weight:600">${fr(car.c47)}/bln</span></div>`:''}
+      ${car.c59?`<div class="qrow"><span class="qlbl">Cicilan 59 bln</span><span class="qval">${fr(car.c59)}/bln</span></div>`:''}
+    `;
+    g.appendChild(div);
+  });
+}
+
+function renderAll(){
+  const cars=filtered();
+  const tenor=parseInt(document.getElementById('g-tenor').value);
+  const ct=document.getElementById('g-chart').value;
+  const withC=cars.filter(c=>gc(c));
+
+  // 1. Cari nilai cicilan termurah per merek untuk highlight
+  const minGroup = {};
+  withC.forEach(c => {
+    const type = c.name.split(' ')[0]; // Ambil kata pertama (Suzuki/Chevrolet/Mitsubishi)
+    const val = gc(c);
+    if (!minGroup[type] || val < minGroup[type]) {
+      minGroup[type] = val;
+    }
+  });
+
+  const bestC=withC.length?withC.reduce((a,b)=>gc(a)<gc(b)?a:b):null;
+  const withTotal=cars.filter(c=>gc(c)!=null&&c.dp!=null);
+  const bestT=withTotal.length?withTotal.reduce((a,b)=>(gc(a)*tenor+a.dp)<(gc(b)*tenor+b.dp)?a:b):null;
+  const families=[...new Set(cars.map(modelFamily))];
+
+  // Render Metrik Atas
+  document.getElementById('mets').innerHTML=`
+    <div class="metric"><div class="ml">Cicilan terendah ${tenor}bln</div><div class="mv">${bestC?fr(gc(bestC)):'-'}</div><div class="ms">${modelLabel(bestC)}</div>${linkButton(bestC?.link)}</div>
+    <div class="metric"><div class="ml">Total biaya terendah</div><div class="mv">${bestT?fr(gc(bestT)*tenor+bestT.dp):'-'}</div><div class="ms">${modelLabel(bestT)}</div>${linkButton(bestT?.link)}</div>
+    <div class="metric"><div class="ml">Penawaran ditampilkan</div><div class="mv">${cars.length}</div><div class="ms">${new Set(cars.map(c=>c.name)).size} model</div></div>
+    <div class="metric"><div class="ml">Tenor dipilih</div><div class="mv">${tenor}</div><div class="ms">bulan / ${(tenor/12).toFixed(1)} thn</div></div>
+  `;
+
+  document.getElementById('submets').innerHTML=families.map(family=>{
+    const familyCars=cars.filter(car=>modelFamily(car)===family);
+    const familyWithC=familyCars.filter(car=>gc(car)!=null);
+    const familyWithTotal=familyCars.filter(car=>gc(car)!=null&&car.dp!=null);
+    const familyBestC=familyWithC.length?familyWithC.reduce((a,b)=>gc(a)<gc(b)?a:b):null;
+    const familyBestT=familyWithTotal.length?familyWithTotal.reduce((a,b)=>(gc(a)*tenor+a.dp)<(gc(b)*tenor+b.dp)?a:b):null;
+    return `
+      <div class="metric">
+        <div class="ml">${family}</div>
+        <div class="mv">${familyBestC?fr(gc(familyBestC)):'-'}</div>
+        <div class="ms">Cicilan terendah: ${modelLabel(familyBestC)}</div>
+        <div class="ms">Total terendah: ${familyBestT?fr(gc(familyBestT)*tenor+familyBestT.dp):'-'}</div>
+        <div class="ms">${modelLabel(familyBestT)}</div>
+        ${linkButton(familyBestC?.link||familyBestT?.link)}
+      </div>
+    `;
+  }).join('');
+
+  const surveyCandidates=families.map(family=>{
+    const familyCars=cars.filter(car=>modelFamily(car)===family);
+    const completeCars=familyCars.filter(car=>gc(car)!=null&&car.dp!=null&&car.year&&normalizeSource(car.src)!=='-');
+    if(!completeCars.length)return null;
+    const best=completeCars.reduce((a,b)=>(gc(a)*tenor+a.dp)<(gc(b)*tenor+b.dp)?a:b);
+    return {family,car:best,total:gc(best)*tenor+best.dp};
+  }).filter(Boolean).sort((a,b)=>a.total-b.total).slice(0,3);
+
+  document.getElementById('survey').innerHTML=surveyCandidates.length?surveyCandidates.map((item,idx)=>`
+    <div class="metric ${isPicked(item.car.id)?'picked-card':''}">
+      <div class="ml">Prioritas ${idx+1} - ${item.family}</div>
+      <div class="mv">${fr(gc(item.car))}</div>
+      <div class="ms">${modelLabel(item.car)}</div>
+      <div class="ms">Total biaya: ${fr(item.total)}</div>
+      <div class="ms">Sumber: ${normalizeSource(item.car.src)}</div>
+      <div class="pickrow">${isPicked(item.car.id)?'<span class="picktag">Dipilih survei</span>':''}${pickButton(item.car.id,'Batal survei','Pilih survei')}</div>
+      ${linkButton(item.car.link)}
+    </div>
+  `).join(''):`<div class="metric"><div class="ml">Belum ada shortlist</div><div class="mv">-</div><div class="ms">Lengkapi DP, tahun, dan sumber agar sistem bisa merekomendasikan unit survei.</div></div>`;
+
+  const pickedCars=SURVEY_PICKS.map(id=>cars.find(car=>car.id===id)).filter(Boolean);
+  document.getElementById('survey-picked').innerHTML=pickedCars.length?pickedCars.map((car,idx)=>`
+    <div class="metric picked-card">
+      <div class="ml">Pilihan ${idx+1}</div>
+      <div class="mv">${gc(car)!=null?fr(gc(car)):'-'}</div>
+      <div class="ms">${modelLabel(car)}</div>
+      <div class="ms">DP: ${fr(car.dp)}</div>
+      <div class="ms">Sumber: ${normalizeSource(car.src)}</div>
+      <div class="pickrow"><span class="picktag">Dipilih survei</span>${pickButton(car.id,'Batal survei','Pilih survei')}</div>
+      ${linkButton(car.link)}
+    </div>
+  `).join(''):`<div class="metric"><div class="ml">Belum ada pilihan</div><div class="mv">-</div><div class="ms">Klik tombol "Pilih survei" pada shortlist, tabel, atau kartu penawaran.</div></div>`;
+  const shareUrlEl=document.getElementById('share-url');
+  if(shareUrlEl)shareUrlEl.textContent=surveyUrl();
+
+  document.getElementById('cleg').innerHTML=cars.map((c,i)=>`<span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col(i)};margin-right:4px;vertical-align:middle"></span>${c.name.split(' ').slice(-2).join(' ')} ${c.year}</span>`).join('');
+
+  // Render Grafik
+  const labels=cars.map(c=>{
+    const short=c.name.replace('Suzuki SX4 ','SX4 ').replace('Chevrolet Trax','Trax').replace('Mitsubishi ','');
+    return short+' '+c.year;
+  });
+  const data=cars.map(c=>{
+    if(ct==='cicilan')return gc(c)?gc(c)/1e6:null;
+    if(ct==='total')return gc(c)?(gc(c)*tenor+c.dp)/1e6:null;
+    return c.otr/1e6;
+  });
+  const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+  const gc2=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.05)';
+  const tc=isDark?'#888':'#999';
+  const h=Math.max(300,cars.length*34+80);
+  document.getElementById('cwrap').style.height=h+'px';
+  if(myChart){myChart.destroy();myChart=null;}
+  myChart=new Chart(document.getElementById('mc'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'Nilai',data,backgroundColor:cars.map((_,i)=>col(i)+'bb'),borderColor:cars.map((_,i)=>col(i)),borderWidth:1.5,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:gc2},ticks:{color:tc,font:{size:11},callback:v=>v==null?'':v.toFixed(1)+'jt'}},
+        y:{grid:{color:gc2},ticks:{color:tc,font:{size:10}}}
+      }
+    }
+  });
+
+  // 2. KELOMPOKKAN & RENDER KOTAK TABEL PER JENIS MOBIL
+  const groupedCars = {};
+  cars.forEach((car, i) => {
+    const type = car.name.split(' ')[0];
+    if(!groupedCars[type]) groupedCars[type] = [];
+    groupedCars[type].push({car, i});
+  });
+
+  // Ambil container tabel lama dan ubah strukturnya
+  let twrap = document.getElementById('twrap');
+  if(!twrap) {
+    const oldRtb = document.getElementById('rtb');
+    if(oldRtb) {
+      twrap = oldRtb.closest('div');
+      twrap.id = 'twrap';
+    }
+  }
+  if(!twrap) return;
+  twrap.innerHTML = ''; // Hapus tabel bawaan yang lama
+
+  // Buat kotak tabel baru untuk masing-masing grup (Suzuki, Chevrolet, Mitsubishi)
+  for(const type in groupedCars) {
+    let kotak = document.createElement('div');
+    kotak.style.cssText = 'border:.5px solid var(--border); border-radius:var(--r); margin-bottom:1.5rem; overflow:hidden; background:var(--surface)';
+    
+    // Header kotak (Nama Merek)
+    let head = document.createElement('div');
+    head.style.cssText = 'background:var(--s2); padding:10px 14px; font-weight:600; font-size:12px; letter-spacing:0.5px; border-bottom:.5px solid var(--border); display:flex; align-items:center; gap:8px';
+    head.innerHTML = `<span class="dot" style="background:var(--text)"></span> ${type.toUpperCase()}`;
+    kotak.appendChild(head);
+
+    // Area tabel agar bisa di-scroll kesamping di HP
+    let tblWrap = document.createElement('div');
+    tblWrap.style.overflowX = 'auto';
+
+    let tbl = document.createElement('table');
+    tbl.className = 'rtbl';
+    tbl.style.margin = '0';
+    tbl.innerHTML = `
+      <thead><tr>
+        <th>Mobil</th><th>Thn</th><th>OTR</th><th>DP</th>
+        <th>Cicilan 35bln</th><th>Cicilan 47bln</th><th>Cicilan 59bln</th><th>Sumber</th><th>Link</th><th>Survei</th>
+      </tr></thead>
+      <tbody></tbody>
+    `;
+    let tbody = tbl.querySelector('tbody');
+
+    // Masukkan baris data mobil ke dalam tabel masing-masing
+    groupedCars[type].forEach(({car, i}) => {
+      const c = gc(car);
+      const isBestInClass = c && minGroup[type] === c;
+      const trClass = isBestInClass ? 'hl' : ''; // Warna highlight
+
+      // Badge tulisan "terbaik"
+      const b35 = tenor===35 && isBestInClass ? '<span class="badge bg" style="margin-left:4px">terbaik</span>' : '';
+      const b47 = tenor===47 && isBestInClass ? '<span class="badge bg" style="margin-left:4px">terbaik</span>' : '';
+      const b59 = tenor===59 && isBestInClass ? '<span class="badge bg" style="margin-left:4px">terbaik</span>' : '';
+
+      const tr = document.createElement('tr');
+      if(trClass||isPicked(car.id)) tr.className = `${trClass} ${isPicked(car.id)?'picked-card':''}`.trim();
+      
+      tr.innerHTML=`
+        <td class="ntd"><span class="dot" style="background:${col(i)};display:inline-block;margin-right:7px;vertical-align:middle"></span>${car.name}</td>
+        <td style="font-family:'DM Sans',sans-serif">${car.year}</td>
+        <td>${fr(car.otr)}</td>
+        <td>${fr(car.dp)}</td>
+        <td>${car.c35 ? (tenor===35 ? `<strong>${fr(car.c35)}</strong>${b35}` : fr(car.c35)) : '-'}</td>
+        <td>${car.c47 ? (tenor===47 ? `<strong>${fr(car.c47)}</strong>${b47}` : fr(car.c47)) : '-'}</td>
+        <td>${car.c59 ? (tenor===59 ? `<strong>${fr(car.c59)}</strong>${b59}` : fr(car.c59)) : '-'}</td>
+        <td style="font-size:11px;color:var(--t3);font-family:'DM Sans',sans-serif;max-width:180px">${normalizeSource(car.src)}</td>
+        <td style="font-family:'DM Sans',sans-serif;font-size:11px">${car.link?`<a href="${car.link}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:600">Buka</a>`:'-'}</td>
+        <td style="font-family:'DM Sans',sans-serif">${pickButton(car.id,'Batal','Pilih')}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tblWrap.appendChild(tbl);
+    kotak.appendChild(tblWrap);
+    twrap.appendChild(kotak);
+  }
+}
+
+function renderCustom(){
+  const tb=document.getElementById('ctb');tb.innerHTML='';
+  CARS.forEach((car,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><span class="dot" style="background:${col(i)}"></span></td>
+      <td><input type="text" value="${car.name}" oninput="upd(${car.id},'name',this.value)" style="font-family:'DM Sans',sans-serif;font-size:12px"></td>
+      <td><input type="text" value="${car.year}" oninput="upd(${car.id},'year',this.value)"></td>
+      <td><input type="number" value="${car.otr||''}" step="1000000" oninput="upd(${car.id},'otr',this.value)"></td>
+      <td><input type="number" value="${car.dp||''}" step="1000000" oninput="upd(${car.id},'dp',this.value)"></td>
+      <td><input type="number" value="${car.c35||''}" step="10000" oninput="upd(${car.id},'c35',this.value)"></td>
+      <td><input type="number" value="${car.c47||''}" step="10000" oninput="upd(${car.id},'c47',this.value)"></td>
+      <td><input type="number" value="${car.c59||''}" step="10000" oninput="upd(${car.id},'c59',this.value)"></td>
+      <td><input type="text" value="${car.src||''}" oninput="upd(${car.id},'src',this.value)" style="font-family:'DM Sans',sans-serif;font-size:11px"></td>
+      <td><input type="text" value="${car.link||''}" oninput="upd(${car.id},'link',this.value)" style="font-family:'DM Sans',sans-serif;font-size:11px" placeholder="https://..."></td>
+      <td>${CARS.length>1?`<button class="delbtn" onclick="del(${car.id})">Ã—</button>`:''}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+function upd(id,f,v){
+  const c=CARS.find(x=>x.id===id);if(!c)return;
+  const nums=['otr','dp','c35','c47','c59'];
+  c[f]=nums.includes(f)?(parseFloat(v)||null):v;
+  renderQuotes();
+  renderAll();
+}
+function del(id){if(CARS.length<=1)return;CARS=CARS.filter(x=>x.id!==id);renderCustom();renderQuotes();renderAll();}
+function addCar(){
+  if(CARS.length>=20)return;
+  CARS.push({id:nid++,name:'Mobil baru',year:'2018',otr:130000000,dp:50000000,c35:null,c47:null,c59:null,src:'',link:''});
+  renderCustom();renderQuotes();renderAll();
+}
+
+loadSurveyPicks();
+renderQuotes();
+renderCustom();
+renderAll();
+</script>
+
+
+</body></html>
+
+
